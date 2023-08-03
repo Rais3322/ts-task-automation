@@ -17,6 +17,19 @@ const parseData = async (rawResponse, parseType) => {
 	return parsedValues;
 };
 
+const filterContracts = async (contracts) => {
+	const filtered = contracts.filter((contract) => {
+		const { system, project, district, orgName, ITN, contractNumber, deadline, taskLink } = contract
+		const isTSContract = project === 'ТП СЗИ';
+		const hasRequiredFields = (system && district && orgName && ITN && contractNumber && deadline);
+		const isMissingTask = !taskLink;
+
+		return isTSContract && hasRequiredFields && isMissingTask;
+	});
+
+	return filtered;
+};
+
 const main = async () => {
 	const googleClient = await authorizeGoogle();
 
@@ -27,8 +40,10 @@ const main = async () => {
 	)
 
 	const parsedContracts = await parseData(fetchedContracts, PARSE_TS_CONTRACTS);
+	
+	const TSContracts = await filterContracts(parsedContracts);
 
-	console.log(parsedContracts);
+	console.log(TSContracts);
 };
 
 main();
