@@ -4,7 +4,9 @@
   "description": "В данном проекте реализовано автоматическое создание задач по технической поддержке СЗИ",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "npm install",
+    "start": "node ./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -13,8 +15,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/local-auth": "^2.1.1",
     "@notionhq/client": "^2.2.7",
     "dotenv": "^16.3.1",
+    "googleapis": "^122.0.0",
+    "moment": "^2.29.4",
     "winston": "^3.10.0"
   }
 }
