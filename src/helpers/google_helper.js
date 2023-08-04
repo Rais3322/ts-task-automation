@@ -5,7 +5,7 @@ const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 const logger = require('../log/logger');
 
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = path.resolve(__dirname, '../env/token.json');
 const CREDENTIALS_PATH = path.resolve(__dirname, '../env/credentials.json');
 
@@ -62,6 +62,26 @@ const fetchGoogleSheetsValue = async (auth, spreadsheetId, range) => {
 	};
 };
 
+const addGoogleSheetsValue = async (auth, row, value) => {
+	const sheets = google.sheets({ version: 'v4', auth})
+	const targetCell = `Договора 2023!AF${row}`;
+	try {
+		response = await sheets.spreadsheets.values.update({
+			spreadsheetId: process.env.CONTRACTS_SPREADSHEET,
+			range: targetCell,
+			valueInputOption: 'USER_ENTERED',
+			resourse: {
+				values: [value]
+			},
+			includeValuesInResponse: true,
+		});
+		logger.info(`Link recorded in ${response.data.updatedRange}`);
+		return response;
+	} catch (error) {
+		logger.error('Error recording link', error)
+	}
+};
+
 const sendGmailMessage = async (src, dst, sub, msg, callback) => {
 	const transporter = nodemailer.createTransport({
 		service: 'gmail',
@@ -93,4 +113,4 @@ const sendGmailMessage = async (src, dst, sub, msg, callback) => {
 	};
 };
 
-module.exports = { authorizeGoogle, fetchGoogleSheetsValue, sendGmailMessage };
+module.exports = { authorizeGoogle, fetchGoogleSheetsValue, sendGmailMessage, addGoogleSheetsValue };

@@ -18,12 +18,14 @@ const parseTSContracts = async (rawValue) => {
 	if (rawValue[14]) {
 		parsedDate = await parseDate(rawValue[14])
 	};
+	const ITN = rawValue[4].slice(0, 10);
 	const parsedValue = {
+		uniqueField: `${rawValue[0]} ${rawValue[1]} ${rawValue[2]} ${rawValue[3]} ${ITN} ${rawValue[10]}` ,
 		system: rawValue[0],
 		project: rawValue[1],
 		district: rawValue[2],
 		orgName: rawValue[3],
-		ITN: rawValue[4].slice(0, 10),
+		ITN: ITN,
 		contractNumber: rawValue[10],
 		deadline: parsedDate,
 		taskLink: rawValue[31],
