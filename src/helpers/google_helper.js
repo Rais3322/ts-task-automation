@@ -70,8 +70,8 @@ const addGoogleSheetsValue = async (auth, row, value) => {
 			spreadsheetId: process.env.CONTRACTS_SPREADSHEET,
 			range: targetCell,
 			valueInputOption: 'USER_ENTERED',
-			resourse: {
-				values: [value]
+			resource: {
+				values: [[value]]
 			},
 			includeValuesInResponse: true,
 		});

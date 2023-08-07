@@ -74,9 +74,9 @@ const createNotionPage = async (client, contract, callback) => {
 		logger.info(`Page for contract № ${contractNumber} created`);
 		contract.taskLink = response.url;
 		if (typeof callback === 'function') {
-			callback(taskLink);
+			callback(contract.taskLink);
 		};
-		return taskLink;
+		return contract.taskLink;
 	} catch (error) {
 		logger.error(`Error creating page for contract № ${contractNumber}`, error);
 	};

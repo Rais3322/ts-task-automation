@@ -40,9 +40,7 @@ const handleTSContracts = async (googleClient, notionClient, contracts, contract
 			logger.info(`Contract № ${contract.contractNumber} added to DB`);
 			contract.taskLink = await createNotionPage(notionClient, contract, async (taskLink) => {
 				const contractRow = await findContractPosition(contractsTable, contract);
-				response = await addGoogleSheetsValue(googleClient, contractRow, taskLink);
-				console.log(response);
-				console.log(response.params.resourse);
+				const response = await addGoogleSheetsValue(googleClient, contractRow, taskLink);
 			});
 		});
 	}
