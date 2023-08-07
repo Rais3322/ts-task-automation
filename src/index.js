@@ -75,8 +75,6 @@ const main = async () => {
 	const parsedContracts = await parseData(fetchedContracts, PARSE_TS_CONTRACTS);
 	
 	const TSContracts = await filterContracts(parsedContracts);
-
-	TSContracts.length = 5;
 	
 	await connectDB(process.env.DB_PATH);
 
