@@ -76,13 +76,7 @@ const main = async () => {
 	
 	const TSContracts = await filterContracts(parsedContracts);
 
-	TSContracts.length = 1;
-
-	// for (const TSContract of TSContracts) {
-	// 	const TSContractRow = await findContractPosition(fetchedContracts, TSContract);
-	// 	console.log(TSContract);
-	// 	console.log(`Находится в строке ${TSContractRow}`);
-	// }
+	TSContracts.length = 5;
 	
 	await connectDB(process.env.DB_PATH);
 
