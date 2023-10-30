@@ -56,7 +56,7 @@ const handleTSContracts = async (googleClient, notionClient, contracts, contract
 const postErrorHandling = async (googleClient, notionClient) => {
 	const contracts = await retrieveRecord(TSContract)
 	for (const contract of contracts) {
-		if (contract[RECORD_CREATED] === 0) {
+		if (contract[RECORD_CREATED] === false) {
 			contract.taskLink = await createNotionPage(notionClient, contract, async (taskLink) => {
 				const contractRow = await findContractPosition(contractsTable, contract);
 				await updateRecord(TSContract, createdFlag, RECORD_CREATED)
