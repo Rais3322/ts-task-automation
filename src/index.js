@@ -102,6 +102,8 @@ const main = async () => {
 
 	await handleTSContracts(googleClient, notionClient, TSContracts, fetchedContracts);
 
+	await connectDB(process.env.DB_PATH);
+
 	await postErrorHandling(googleClient, notionClient, fetchedContracts);
 
 	await disconnectDB();
