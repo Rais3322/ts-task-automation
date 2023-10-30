@@ -53,7 +53,7 @@ const handleTSContracts = async (googleClient, notionClient, contracts, contract
 	}
 };
 
-const postErrorHandling = async (googleClient, notionClient) => {
+const postErrorHandling = async (googleClient, notionClient, contractsTable) => {
 	const contracts = await retrieveRecord(TSContract)
 	for (const contract of contracts) {
 		if (contract[RECORD_CREATED] === false) {
@@ -100,7 +100,7 @@ const main = async () => {
 
 	await handleTSContracts(googleClient, notionClient, TSContracts, fetchedContracts);
 
-	await postErrorHandling(googleClient, notionClient);
+	await postErrorHandling(googleClient, notionClient, fetchedContracts);
 
 	await disconnectDB();
 };
