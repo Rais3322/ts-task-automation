@@ -69,8 +69,8 @@ const postErrorHandling = async (googleClient, notionClient, contractsTable) => 
 const findContractPosition = async (rawValues, currentContract) => {
 	let values = rawValues.data.values;
 	for (let rowNumber = 0; rowNumber < values.length; rowNumber++) {
+		const row = values[rowNumber];
 		if (row[4]) {
-			const row = values[rowNumber];
 			const hasCorrectSystem = row[0] === currentContract.system;
 			const hasCorrectProject = row[1] === currentContract.project;
 			const hasCorrectDistrict = row[2] === currentContract.district;
