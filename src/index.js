@@ -69,15 +69,17 @@ const postErrorHandling = async (googleClient, notionClient, contractsTable) => 
 const findContractPosition = async (rawValues, currentContract) => {
 	let values = rawValues.data.values;
 	for (let rowNumber = 0; rowNumber < values.length; rowNumber++) {
-		const row = values[rowNumber];
-		const hasCorrectSystem = row[0] === currentContract.system;
-		const hasCorrectProject = row[1] === currentContract.project;
-		const hasCorrectDistrict = row[2] === currentContract.district;
-		const hasCorrectOrgName = row[3] === currentContract.orgName;
-		const hasCorrectITN = row[4].slice(0, 10) === currentContract.ITN;
-		const hasCorrectContractNumber = row[10] === currentContract.contractNumber;
-		if (hasCorrectSystem && hasCorrectProject && hasCorrectDistrict && hasCorrectOrgName && hasCorrectITN && hasCorrectContractNumber) {
-			return (rowNumber + 5);
+		if (row[4]) {
+			const row = values[rowNumber];
+			const hasCorrectSystem = row[0] === currentContract.system;
+			const hasCorrectProject = row[1] === currentContract.project;
+			const hasCorrectDistrict = row[2] === currentContract.district;
+			const hasCorrectOrgName = row[3] === currentContract.orgName;
+			const hasCorrectITN = row[4].slice(0, 10) === currentContract.ITN;
+			const hasCorrectContractNumber = row[10] === currentContract.contractNumber;
+			if (hasCorrectSystem && hasCorrectProject && hasCorrectDistrict && hasCorrectOrgName && hasCorrectITN && hasCorrectContractNumber) {
+				return (rowNumber + 5);
+			}
 		}
 	}
 }
