@@ -14,6 +14,7 @@ const TSSchema = new Schema({
 	contractNumber: String,
 	deadline: Date,
 	taskLink: String,
+	recordCreated: Boolean,
 });
 
 const TSContract = mongoose.model("TSContract", TSSchema);
