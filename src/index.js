@@ -11,7 +11,7 @@ const UNIQUE_FIELD = 'uniqueField';
 const RECORD_CREATED = 'recocrdCreated';
 const PARSE_TS_CONTRACTS = 'parseTSContracts';
 const createdFlag = {
-	recordCreated: 1
+	recordCreated: true
 }
 
 const parseData = async (rawResponse, parseType) => {
