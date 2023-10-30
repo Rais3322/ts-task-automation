@@ -4,11 +4,15 @@ const parse = require('./helpers/parse_helper');
 const logger = require('./log/logger');
 const { TSContract } = require('./db/db_models');
 const { authorizeGoogle, fetchGoogleSheetsValue, addGoogleSheetsValue } = require('./helpers/google_helper');
-const { connectDB, disconnectDB, addRecord } = require('./helpers/db_helper');
+const { connectDB, disconnectDB, addRecord, updateRecord, retrieveRecord } = require('./helpers/db_helper');
 const { authorizeNotion, createNotionPage } = require('./helpers/notion_helper');
 
 const UNIQUE_FIELD = 'uniqueField';
+const RECORD_CREATED = 'recocrdCreated';
 const PARSE_TS_CONTRACTS = 'parseTSContracts';
+const createdFlag = {
+	recordCreated: 1
+}
 
 const parseData = async (rawResponse, parseType) => {
 	const rawValues = rawResponse.data.values;
@@ -42,11 +46,25 @@ const handleTSContracts = async (googleClient, notionClient, contracts, contract
 			logger.info(`Contract № ${contract.contractNumber} added to DB`);
 			contract.taskLink = await createNotionPage(notionClient, contract, async (taskLink) => {
 				const contractRow = await findContractPosition(contractsTable, contract);
+				await updateRecord(TSContract, createdFlag, RECORD_CREATED)
 				const response = await addGoogleSheetsValue(googleClient, contractRow, taskLink);
 			});
 		});
 	}
 };
+
+const postErrorHandling = async (googleClient, notionClient) => {
+	const contracts = await retrieveRecord(TSContract)
+	for (const contract of contracts) {
+		if (contract[RECORD_CREATED] === 0) {
+			contract.taskLink = await createNotionPage(notionClient, contract, async (taskLink) => {
+				const contractRow = await findContractPosition(contractsTable, contract);
+				await updateRecord(TSContract, createdFlag, RECORD_CREATED)
+				const response = await addGoogleSheetsValue(googleClient, contractRow, taskLink);
+			});
+		};
+	};
+}
 
 const findContractPosition = async (rawValues, currentContract) => {
 	let values = rawValues.data.values;
@@ -77,10 +95,12 @@ const main = async () => {
 	const parsedContracts = await parseData(fetchedContracts, PARSE_TS_CONTRACTS);
 
 	const TSContracts = await filterContracts(parsedContracts);
-	
+
 	await connectDB(process.env.DB_PATH);
 
 	await handleTSContracts(googleClient, notionClient, TSContracts, fetchedContracts);
+
+	await postErrorHandling(googleClient, notionClient);
 
 	await disconnectDB();
 };

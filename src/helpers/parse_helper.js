@@ -29,6 +29,7 @@ const parseTSContracts = async (rawValue) => {
 		contractNumber: rawValue[10],
 		deadline: parsedDate,
 		taskLink: rawValue[31],
+		recordCreated: 0
 	};
 
 	return parsedValue;
