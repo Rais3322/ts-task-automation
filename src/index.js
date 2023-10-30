@@ -14,8 +14,10 @@ const parseData = async (rawResponse, parseType) => {
 	const rawValues = rawResponse.data.values;
 	const parsedValues = [];
 	for (const rawValue of rawValues) {
-		const parsedValue = await parse[parseType](rawValue);
-		parsedValues.push(parsedValue);
+		if (rawValue[4]) {
+			const parsedValue = await parse[parseType](rawValue);
+			parsedValues.push(parsedValue);
+		}
 	};
 
 	return parsedValues;
@@ -73,7 +75,7 @@ const main = async () => {
 	);
 
 	const parsedContracts = await parseData(fetchedContracts, PARSE_TS_CONTRACTS);
-	
+
 	const TSContracts = await filterContracts(parsedContracts);
 	
 	await connectDB(process.env.DB_PATH);
