@@ -8,7 +8,7 @@ const { connectDB, disconnectDB, addRecord, updateRecord, retrieveRecord } = req
 const { authorizeNotion, createNotionPage } = require('./helpers/notion_helper');
 
 const UNIQUE_FIELD = 'uniqueField';
-const RECORD_CREATED = 'recocrdCreated';
+const RECORD_CREATED = 'recordCreated';
 const PARSE_TS_CONTRACTS = 'parseTSContracts';
 const createdFlag = {
 	recordCreated: true
