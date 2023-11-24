@@ -13,7 +13,7 @@ const authorizeNotion = async () => {
 };
 
 const createNotionPage = async (client, contract, callback) => {
-	const { system, project, district, orgName, ITN, contractNumber, deadline, taskLink } = contract;
+	const { system, project, district, orgName, ITN, contractNumber, commentary, deadline, taskLink } = contract;
 	const pageName = `${system} ${project} ${district} ${orgName} ${ITN}`;
 	const formattedDeadline = format(new Date(deadline), 'yyyy-MM-dd')
 	try {
@@ -43,6 +43,13 @@ const createNotionPage = async (client, contract, callback) => {
 					date: {
 						start: formattedDeadline
 					}
+				},
+				"Описание": {
+					rich_text: [
+						{
+							plain_text: commentary
+						}
+					]
 				},
 				"Отдел": {
 					select: {

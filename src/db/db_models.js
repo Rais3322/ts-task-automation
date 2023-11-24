@@ -12,6 +12,7 @@ const TSSchema = new Schema({
 	orgName: String,
 	ITN: Number,
 	contractNumber: String,
+	commentary: String,
 	deadline: Date,
 	taskLink: String,
 });

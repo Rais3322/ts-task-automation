@@ -27,6 +27,7 @@ const parseTSContracts = async (rawValue) => {
 		orgName: rawValue[3],
 		ITN: ITN,
 		contractNumber: rawValue[10],
+		commentary: rawValue[12],
 		deadline: parsedDate,
 		taskLink: rawValue[31],
 	};
