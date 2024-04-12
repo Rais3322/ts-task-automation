@@ -9,6 +9,7 @@ const { authorizeNotion, createNotionPage } = require('./helpers/notion_helper')
 
 const UNIQUE_FIELD = 'uniqueField';
 const PARSE_TS_CONTRACTS = 'parseTSContracts';
+const HALF_HOUR = 1800000;
 
 const parseData = async (rawResponse, parseType) => {
 	const rawValues = rawResponse.data.values;
@@ -36,7 +37,15 @@ const filterContracts = async (contracts) => {
 	return filtered;
 };
 
+const sleep = (n) => {
+	return new Promise(resolve => {
+		setTimeout(resolve, n)
+		console.log("Timeout")
+	});
+}
+
 const handleTSContracts = async (googleClient, notionClient, contracts, contractsTable) => {
+	let counter = 0;
 	for (const contract of contracts) {
 		await addRecord(TSContract, contract, UNIQUE_FIELD, async () => {
 			logger.info(`Contract № ${contract.contractNumber} added to DB`);
@@ -45,6 +54,10 @@ const handleTSContracts = async (googleClient, notionClient, contracts, contract
 				const response = await addGoogleSheetsValue(googleClient, contractRow, taskLink);
 			});
 		});
+		counter++;
+               // if (counter % 15 == 14) {
+               //         await sleep(HALF_HOUR)
+               // }
 	}
 };
 
@@ -59,7 +72,7 @@ const findContractPosition = async (rawValues, currentContract) => {
 		const hasCorrectITN = row[4].slice(0, 10) === currentContract.ITN;
 		const hasCorrectContractNumber = row[10] === currentContract.contractNumber;
 		if (hasCorrectSystem && hasCorrectProject && hasCorrectDistrict && hasCorrectOrgName && hasCorrectITN && hasCorrectContractNumber) {
-			return (rowNumber + 5);
+			return (rowNumber + 3);
 		}
 	}
 }

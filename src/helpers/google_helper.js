@@ -64,7 +64,7 @@ const fetchGoogleSheetsValue = async (auth, spreadsheetId, range) => {
 
 const addGoogleSheetsValue = async (auth, row, value) => {
 	const sheets = google.sheets({ version: 'v4', auth})
-	const targetCell = `Договора 2023!AF${row}`;
+	const targetCell = `Договора 2024!AF${row}`;
 	try {
 		response = await sheets.spreadsheets.values.update({
 			spreadsheetId: process.env.CONTRACTS_SPREADSHEET,

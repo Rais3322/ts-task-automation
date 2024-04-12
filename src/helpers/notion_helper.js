@@ -47,7 +47,9 @@ const createNotionPage = async (client, contract, callback) => {
 				"Описание": {
 					rich_text: [
 						{
-							plain_text: commentary
+							text: {
+								content: commentary
+							}
 						}
 					]
 				},
